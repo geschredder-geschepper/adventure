@@ -14,14 +14,14 @@ body {
     min-width: 600px;
     max-width: 800px;
   }
-
-  h1,
-  h2 {
-    text-align: center;
-  }
 }
 
 h1 {
+  text-align: center;
   font-variant-caps: small-caps;
   color: #F0F;
+}
+
+ul {
+  list-style: none;
 }

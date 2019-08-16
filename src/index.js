@@ -5,51 +5,58 @@ import './styles/main.scss'
 const baseTitle = document.title
 const context = require.context('./scenes/', true, /\.xml$/)
 
-const scenes = context.keys().reduce((result, key) => {
-  const niceKey = key.replace(/^\W*/, '').replace(/\.\w*$/, '')
-  result[niceKey] = new Scene(context(key).default)
-  return result
-}, {})
-
 const stateHandler = new StateHandler({
   inventory: {},
   scenes: {},
   currentScene: 'entry'
 })
 
+const scenes = context.keys().reduce((result, key) => {
+  const niceKey = key.replace(/^\W*/, '').replace(/\.\w*$/, '')
+  result[niceKey] = new Scene(context(key).default, stateHandler)
+  return result
+}, {})
+
 const outlet = {
-  content: document.getElementById('content')
+  content: document.getElementById('content'),
+  actions: document.getElementById('actions')
 }
 
-if (window.location.hash) {
-  stateHandler.initState()
-}
-
-stateHandler.setState({ scenes: { field: true } })
+// if (window.location.hash) {
+//   stateHandler.initState()
+// }
 
 /**
  * @param {Scene} scene
  */
 const render = key => {
   const scene = scenes[key]
-  const { title, content } = scene
+  const { title } = scene
+
+  const contents = scene.contents.map(element => `
+    <p>${element.innerHTML}</p>
+  `).join('')
+
+  const actions = scene.actions.map(element => `
+    <li>
+      <a
+        data-scene="${element.getAttribute('scene')}"
+        class="action"
+        href
+      >${element.textContent}</a>
+    </li>
+  `).join('')
 
   console.table(stateHandler.state)
 
   document.title = baseTitle + (title ? ` - ${title}` : '')
 
-  content.querySelectorAll('[requires]').forEach(element => {
-    if (!stateHandler.hasValue(
-      element.getAttribute('requires')
-    )) {
-      element.parentNode.removeChild(element)
-    }
-  })
-
   outlet.content.innerHTML = `
     <h2>${title}</h2>
-    ${content.innerHTML}
+    ${contents}
   `
+
+  outlet.actions.innerHTML = actions
 
   stateHandler.setState({
     scenes: { [key]: true },
@@ -58,3 +65,17 @@ const render = key => {
 }
 
 render(stateHandler.state.currentScene)
+
+document.addEventListener('click', event => {
+  const { target } = event
+
+  if (!target.matches('.action')) {
+    return
+  }
+
+  event.preventDefault()
+
+  if (target.dataset.scene) {
+    render(target.dataset.scene)
+  }
+})

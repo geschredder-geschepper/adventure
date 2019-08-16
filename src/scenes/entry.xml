@@ -2,12 +2,17 @@
   <title>Es geht los...</title>
 
   <content>
-    <p>
-      Vor dir steht ein Berg...
-    </p>
-
-    <p requires="scenes.entry">
-      ... immer noch.
-    </p>
+    Vor dir steht ein Berg; neben dir befindet sich eine Kneipe.
   </content>
+
+  <content requires="scenes.entry !scenes.mountain">
+    ... immer noch.
+  </content>
+
+  <content requires="scenes.entry scenes.mountain">
+    ... wieder.
+  </content>
+
+  <action scene="mountain">Geh auf den Berg</action>
+  <action scene="pub">Geh in die Kneipe</action>
 </scene>

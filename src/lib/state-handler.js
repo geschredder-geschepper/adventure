@@ -39,9 +39,13 @@ export class StateHandler {
     return this
   }
 
-  hasValue (path) {
+  test (path) {
+    if (Array.isArray(path)) {
+      return path.every(current => this.test(current))
+    }
+
     if (path[0] === '!') {
-      return !this.hasValue()
+      return !this.test(path.slice(1))
     }
 
     return path.split('.').reduce((result, current) => {

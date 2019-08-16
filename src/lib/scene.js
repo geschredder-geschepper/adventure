@@ -1,7 +1,19 @@
 export class Scene {
-  constructor (xml) {
+  constructor (xml, stateHandler) {
     this.document = new DOMParser()
       .parseFromString(xml, 'application/xml')
+    this.stateHandler = stateHandler
+  }
+
+  filter (selector) {
+    return Array.from(
+      this.document.querySelectorAll(selector)
+    ).filter(element => (
+      !element.hasAttribute('requires') ||
+      this.stateHandler.test(
+        element.getAttribute('requires').split(/\s+/)
+      )
+    ))
   }
 
   /**
@@ -13,17 +25,13 @@ export class Scene {
   }
 
   /**
-   * @type {Element[]}
-   */
-  get sections () {
-    return [...this.document.querySelectorAll('section')]
-  }
-
-  /**
    * @type {Element|null}
    */
-  get content () {
-    const content = this.document.querySelector('content')
-    return content && content.cloneNode(true)
+  get contents () {
+    return this.filter('content')
+  }
+
+  get actions () {
+    return this.filter('action')
   }
 }

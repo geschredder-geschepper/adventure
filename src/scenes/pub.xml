@@ -1,0 +1,9 @@
+<scene>
+  <title>In der Kneipe</title>
+
+  <content>
+    Du betrinkst dich in der Kneipe
+  </content>
+
+  <action scene="entry">Genug gesoffen</action>
+</scene>
