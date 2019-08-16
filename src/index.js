@@ -2,14 +2,16 @@ import { StateHandler } from './lib/state-handler'
 import { Scene } from './lib/scene'
 import './styles/main.scss'
 
+const STATE_PROPS = ['scene', 'inventory']
 const baseTitle = document.title
 const context = require.context('./scenes/', true, /\.xml$/)
 
-const stateHandler = new StateHandler({
-  inventory: {},
-  scenes: {},
+const stateHandler = new StateHandler(STATE_PROPS.reduce((result, current) => {
+  result[current] = {}
+  return result
+}, {
   currentScene: 'entry'
-})
+}))
 
 const scenes = context.keys().reduce((result, key) => {
   const niceKey = key.replace(/^\W*/, '').replace(/\.\w*$/, '')
@@ -26,11 +28,17 @@ const outlet = {
 //   stateHandler.initState()
 // }
 
+const mapDataAttributes = element => STATE_PROPS
+  .filter(current => element.hasAttribute(current))
+  .map(current => `data-${current}="${element.getAttribute(current)}"`)
+  .join('')
+
 /**
  * @param {Scene} scene
  */
-const render = key => {
-  const scene = scenes[key]
+const render = () => {
+  const { currentScene } = stateHandler.state
+  const scene = scenes[currentScene]
   const { title } = scene
 
   const contents = scene.contents.map(element => `
@@ -40,7 +48,7 @@ const render = key => {
   const actions = scene.actions.map(element => `
     <li>
       <a
-        data-scene="${element.getAttribute('scene')}"
+        ${mapDataAttributes(element)}
         class="action"
         href
       >${element.textContent}</a>
@@ -59,12 +67,11 @@ const render = key => {
   outlet.actions.innerHTML = actions
 
   stateHandler.setState({
-    scenes: { [key]: true },
-    currentScene: key
+    scene: { [currentScene]: true }
   })
 }
 
-render(stateHandler.state.currentScene)
+render()
 
 document.addEventListener('click', event => {
   const { target } = event
@@ -76,6 +83,14 @@ document.addEventListener('click', event => {
   event.preventDefault()
 
   if (target.dataset.scene) {
-    render(target.dataset.scene)
+    stateHandler.setState({ currentScene: target.dataset.scene })
   }
+
+  if (target.dataset.inventory) {
+    stateHandler.setState({
+      inventory: { [target.dataset.inventory]: true }
+    })
+  }
+
+  render()
 })

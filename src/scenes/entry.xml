@@ -5,11 +5,11 @@
     Vor dir steht ein Berg; neben dir befindet sich eine Kneipe.
   </content>
 
-  <content requires="scenes.entry !scenes.mountain">
+  <content requires="scene.entry !scene.mountain">
     ... immer noch.
   </content>
 
-  <content requires="scenes.entry scenes.mountain">
+  <content requires="scene.entry scene.mountain">
     ... wieder.
   </content>
 
