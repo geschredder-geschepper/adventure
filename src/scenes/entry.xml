@@ -1,16 +1,16 @@
 <scene>
   <title>Es geht los...</title>
 
-  <content>
+  <content requires="!scene.entry">
     Vor dir steht ein Berg; neben dir befindet sich eine Kneipe.
   </content>
 
   <content requires="scene.entry !scene.mountain">
-    ... immer noch.
+    Du stehst immer noch vor dem Berg; neben dir befindet sich eine Kneipe.
   </content>
 
   <content requires="scene.entry scene.mountain">
-    ... wieder.
+    Du stehst schon wieder vor dem Berg; neben dir befindet sich eine Kneipe.
   </content>
 
   <action scene="mountain">Geh auf den Berg</action>
