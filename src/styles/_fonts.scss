@@ -1,0 +1,17 @@
+@font-face {
+  font-family: 'AnotherTypewriter';
+  src: url('../fonts/atwriter.ttf');
+}
+
+@font-face {
+  font-family: 'OldNewspaperTypes';
+  src: url('../fonts/OldNewspaperTypes.ttf');
+}
+
+@mixin font-typewriter {
+  font-family: 'AnotherTypewriter';
+}
+
+@mixin font-newspaper {
+  font-family: 'OldNewspaperTypes';
+}

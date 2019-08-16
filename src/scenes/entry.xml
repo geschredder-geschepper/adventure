@@ -1,0 +1,13 @@
+<scene>
+  <title>Es geht los...</title>
+
+  <content>
+    <p>
+      Schauen wir mal...
+    </p>
+
+    <p requires="scenes.field">
+      ... wie es weiter geht.
+    </p>
+  </content>
+</scene>

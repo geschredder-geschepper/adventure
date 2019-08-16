@@ -1,0 +1,42 @@
+{
+  "name": "geschredder",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": {
+    "name": "m3g4p0p",
+    "url": "https://github.com/m3g4p0p"
+  },
+  "scripts": {
+    "build": "yarn webpack --env.production",
+    "serve": "webpack-dev-server"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.1.0",
+    "file-loader": "^4.1.0",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.8.0",
+    "node-sass": "^4.12.0",
+    "raw-loader": "^3.1.0",
+    "sass-loader": "^7.1.0",
+    "standard": "^13.1.0",
+    "standard-loader": "^7.0.0",
+    "style-loader": "^1.0.0",
+    "url-loader": "^2.1.0",
+    "webpack": "^4.39.1",
+    "webpack-cli": "^3.3.6",
+    "webpack-dev-server": "^3.7.2"
+  },
+  "standard": {
+    "env": {
+      "browser": true
+    }
+  },
+  "dependencies": {
+    "normalize.css": "^8.0.1"
+  }
+}
