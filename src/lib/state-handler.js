@@ -12,8 +12,8 @@ const merge = (dest, src) => Object.keys(src).reduce((result, key) => {
 }, dest)
 
 export class StateHandler {
-  constructor () {
-    this.state = {}
+  constructor (initialState) {
+    this.state = initialState
   }
 
   initState () {
@@ -33,7 +33,7 @@ export class StateHandler {
     window.history.replaceState(
       state,
       document.head.title,
-      '#' + encode(state)
+      '#' + encode(this.state)
     )
 
     return this

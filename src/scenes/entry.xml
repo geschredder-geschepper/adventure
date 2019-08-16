@@ -3,11 +3,11 @@
 
   <content>
     <p>
-      Schauen wir mal...
+      Vor dir steht ein Berg...
     </p>
 
-    <p requires="scenes.field">
-      ... wie es weiter geht.
+    <p requires="scenes.entry">
+      ... immer noch.
     </p>
   </content>
 </scene>

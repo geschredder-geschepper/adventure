@@ -2,8 +2,6 @@ import { StateHandler } from './lib/state-handler'
 import { Scene } from './lib/scene'
 import './styles/main.scss'
 
-// console.log(require('./scenes/entry.xml_'))
-
 const baseTitle = document.title
 const context = require.context('./scenes/', true, /\.xml$/)
 
@@ -13,17 +11,18 @@ const scenes = context.keys().reduce((result, key) => {
   return result
 }, {})
 
-const stateHandler = new StateHandler()
-const game = document.getElementById('game')
+const stateHandler = new StateHandler({
+  inventory: {},
+  scenes: {},
+  currentScene: 'entry'
+})
+
+const outlet = {
+  content: document.getElementById('content')
+}
 
 if (window.location.hash) {
   stateHandler.initState()
-} else {
-  stateHandler.setState({
-    inventory: {},
-    scenes: {},
-    currentScene: 'entry'
-  })
 }
 
 stateHandler.setState({ scenes: { field: true } })
@@ -35,17 +34,19 @@ const render = key => {
   const scene = scenes[key]
   const { title, content } = scene
 
+  console.table(stateHandler.state)
+
   document.title = baseTitle + (title ? ` - ${title}` : '')
 
-  content.querySelectorAll('[requires]').forEach(node => {
+  content.querySelectorAll('[requires]').forEach(element => {
     if (!stateHandler.hasValue(
-      node.getAttribute('requires')
+      element.getAttribute('requires')
     )) {
-      node.parentNode.removeChild(node)
+      element.parentNode.removeChild(element)
     }
   })
 
-  game.innerHTML = `
+  outlet.content.innerHTML = `
     <h2>${title}</h2>
     ${content.innerHTML}
   `
