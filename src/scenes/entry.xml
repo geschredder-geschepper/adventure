@@ -7,6 +7,7 @@
 
   <content requires="scene.entry">
     Es ist wie es ist.
+
     <content requires="!scene.mountain">
       Du stehst immer noch vor dem Berg; neben dir befindet sich eine Kneipe.
     </content>
@@ -16,6 +17,11 @@
     </content>
   </content>
 
+  <content requires="scene.pub inventory.beer">
+    Du hast auch schon gut einen in der Schüssel.
+  </content>
+
   <action scene="mountain">Geh auf den Berg</action>
   <action scene="pub">Geh in die Kneipe</action>
+  <action requires="inventory.anotherBeer" scene="riot">Zünde den Saftladen an</action>
 </scene>

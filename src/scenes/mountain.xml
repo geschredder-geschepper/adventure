@@ -1,7 +1,19 @@
 <scene>
   <title>Auf dem Berg</title>
 
-  <content>Nun stehts du auf dem Berg. es zieht.</content>
+  <content requires="!inventory.beer">
+    Nun stehts du auf dem Berg. Es zieht.
+  </content>
 
-  <action scene="entry">Geh wieder runter</action>
+  <content requires="inventory.beer">
+    <content requires="!inventory.anotherBeer">
+      Boah ey nee hier ist das echt zugig.
+    </content>
+
+    <content requires="inventory.anotherBeer">
+      Ein Glück weg von der Scheiß Nazi Kneipe!
+    </content>
+  </content>
+
+  <action requires="!inventory.anotherBeer" scene="entry">Geh wieder runter</action>
 </scene>

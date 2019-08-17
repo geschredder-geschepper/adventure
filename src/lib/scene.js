@@ -7,7 +7,8 @@ export class Scene {
 
   filter (selector) {
     return Array.from(
-      this.document.querySelectorAll(selector)
+      /** @type {Element[]} */
+      (this.document.querySelectorAll(selector))
     ).filter(element => (
       !element.hasAttribute('requires') ||
       this.stateHandler.test(
@@ -19,9 +20,9 @@ export class Scene {
     }).map(element => {
       const clone = element.cloneNode(true)
 
-      clone.querySelectorAll(selector).forEach(predecessor => {
-        predecessor.parentNode.removeChild(predecessor)
-      })
+      clone.querySelectorAll(selector).forEach(
+        node => node.parentNode.removeChild(node)
+      )
 
       return clone
     })

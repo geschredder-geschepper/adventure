@@ -2,14 +2,28 @@
   <title>In der Kneipe</title>
 
   <content requires="!inventory.beer">
-    Du befindest dich in der Kneipe
+    Du befindest dich in der Kneipe.
   </content>
 
   <content requires="inventory.beer">
-    Du betrinkst dich in der Kneipe
+    Du betrinkst dich in der Kneipe.
+
+    <content requires="!inventory.anotherBeer">
+      Die Mucke ist eigentlich auch ganz nice.
+    </content>
   </content>
 
-  <action requires="!inventory.beer" scene="entry">Geh lieber wieder</action>
-  <action requires="!inventory.beer" inventory="beer">Trink 1 Bier</action>
-  <action requires="inventory.beer scene.pub" scene="entry">Genug gesoffen</action>
+  <content requires="inventory.anotherBeer">
+    Warte mal, läuft da etwa Endstufe?
+  </content>
+
+  <action requires="!inventory.beer">
+    <action inventory="beer">Trink 1 paar Bier</action>
+    <action scene="entry">Geh lieber wieder</action>
+  </action>
+
+  <action requires="inventory.beer">
+    <action requires="!inventory.anotherBeer" inventory="anotherBeer">Trink noch 1 paar Bier</action>
+    <action scene="entry">Genug gesoffen</action>
+  </action>
 </scene>

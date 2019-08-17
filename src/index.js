@@ -24,9 +24,9 @@ const outlet = {
   actions: document.getElementById('actions')
 }
 
-// if (window.location.hash) {
-//   stateHandler.initState()
-// }
+if (window.location.hash) {
+  stateHandler.initState()
+}
 
 const mapDataAttributes = element => STATE_PROPS
   .filter(current => element.hasAttribute(current))
@@ -54,8 +54,6 @@ const render = () => {
       >${element.textContent}</a>
     </li>
   `).join('')
-
-  console.table(stateHandler.state)
 
   document.title = baseTitle + (title ? ` - ${title}` : '')
 
