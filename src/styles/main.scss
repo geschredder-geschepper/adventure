@@ -7,11 +7,13 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 20px;
   color: #0F0;
   background-color: black;
+  letter-spacing: .2em;
+  line-height: 1.8;
 
   > * {
-    min-width: 600px;
     max-width: 800px;
   }
 }
@@ -24,4 +26,20 @@ h1 {
 
 ul {
   list-style: none;
+  text-align: center;
+  padding: 0;
+
+  li,
+  a {
+    padding: 10px 0;
+  }
+
+  a {
+    color: #F0F;
+    text-decoration: none;
+
+    &:hover {
+      color: #0F0;
+    }
+  }
 }

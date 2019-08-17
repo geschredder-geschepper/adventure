@@ -13,7 +13,18 @@ export class Scene {
       this.stateHandler.test(
         element.getAttribute('requires').split(/\s+/)
       )
-    ))
+    )).filter((element, index, array) => {
+      const closest = element.parentNode.closest(selector)
+      return closest ? array.includes(closest) : true
+    }).map(element => {
+      const clone = element.cloneNode(true)
+
+      clone.querySelectorAll(selector).forEach(predecessor => {
+        predecessor.parentNode.removeChild(predecessor)
+      })
+
+      return clone
+    })
   }
 
   /**

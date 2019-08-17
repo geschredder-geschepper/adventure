@@ -5,12 +5,15 @@
     Vor dir steht ein Berg; neben dir befindet sich eine Kneipe.
   </content>
 
-  <content requires="scene.entry !scene.mountain">
-    Du stehst immer noch vor dem Berg; neben dir befindet sich eine Kneipe.
-  </content>
+  <content requires="scene.entry">
+    Es ist wie es ist.
+    <content requires="!scene.mountain">
+      Du stehst immer noch vor dem Berg; neben dir befindet sich eine Kneipe.
+    </content>
 
-  <content requires="scene.entry scene.mountain">
-    Du stehst schon wieder vor dem Berg; neben dir befindet sich eine Kneipe.
+    <content requires="scene.mountain">
+      Du stehst schon wieder vor dem Berg; neben dir befindet sich eine Kneipe.
+    </content>
   </content>
 
   <action scene="mountain">Geh auf den Berg</action>
