@@ -31,9 +31,21 @@ export class StateHandler {
     merge(this.state, state)
 
     window.history.replaceState(
-      state,
+      this.state,
       document.head.title,
       '#' + encode(this.state)
+    )
+
+    return this
+  }
+
+  clearState () {
+    this.state = {}
+
+    window.history.replaceState(
+      this.state,
+      document.head.title,
+      '.'
     )
 
     return this

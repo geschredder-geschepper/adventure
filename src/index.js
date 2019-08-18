@@ -41,9 +41,9 @@ const render = () => {
   const scene = scenes[currentScene]
   const { title } = scene
 
-  const contents = scene.contents.map(element => `
-    <p>${element.innerHTML}</p>
-  `).join('')
+  const contents = scene.contents.flatMap(element =>
+    element.textContent.split(/\n{2,}/).map(text => `<p>${text}</p>`)
+  ).join('')
 
   const actions = scene.actions.map(element => `
     <li>
@@ -64,9 +64,13 @@ const render = () => {
 
   outlet.actions.innerHTML = actions
 
-  stateHandler.setState({
-    scene: { [currentScene]: true }
-  })
+  if (actions) {
+    stateHandler.setState({
+      scene: { [currentScene]: true }
+    })
+  } else {
+    stateHandler.clearState()
+  }
 }
 
 render()

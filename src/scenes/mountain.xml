@@ -10,9 +10,13 @@
       Boah ey nee hier ist das echt zugig.
     </content>
 
-    <content requires="inventory.anotherBeer">
-      Ein Glück weg von der Scheiß Nazi Kneipe!
+    <content requires="inventory.anotherBeer !scene.riot">
+      Ein Glück weg von der scheiß Nazi Kneipe!
     </content>
+  </content>
+
+  <content requires="scene.riot">
+    Nice. Du genießt die Aussicht auf die brennende Nazi Kneipe -- besser kann ein Tag kaum laufen!
   </content>
 
   <action requires="!inventory.anotherBeer" scene="entry">Geh wieder runter</action>
