@@ -1,39 +1,43 @@
 <scene>
   <title>In der Kneipe</title>
 
-  <content requires="!inventory.beer">
-    Du befindest dich in der Kneipe.
+  <content>
+    <fragment condition="!inventory.beer">
+      Du befindest dich in der Kneipe.
+    </fragment>
+
+    <fragment condition="!scene.riot">
+      <fragment condition="inventory.beer">
+        Du betrinkst dich in der Kneipe.
+
+        <fragment condition="!inventory.anotherBeer">
+          Die Mucke ist eigentlich auch ganz nice.
+        </fragment>
+      </fragment>
+
+      <fragment condition="inventory.anotherBeer">
+        Warte mal, läuft da etwa Endstufe?
+      </fragment>
+    </fragment>
+
+    <fragment condition="scene.riot">
+      Das war mal eine scheiß Idee. Der Laden ist sau am abfackeln und der Wirt ist nicht aufzufinden.
+
+      Zu trinken gibt's hier jedenfalls nichts mehr.
+    </fragment>
   </content>
 
-  <content requires="!scene.riot">
-    <content requires="inventory.beer">
-      Du betrinkst dich in der Kneipe.
+  <actions>
+    <fragment condition="!scene.riot">
+      <fragment condition="!inventory.beer">
+        <action inventory="beer">Trink 1 paar Bier</action>
+        <action scene="entry">Geh lieber wieder</action>
+      </fragment>
 
-      <content requires="!inventory.anotherBeer">
-        Die Mucke ist eigentlich auch ganz nice.
-      </content>
-    </content>
-
-    <content requires="inventory.anotherBeer">
-      Warte mal, läuft da etwa Endstufe?
-    </content>
-  </content>
-
-  <content requires="scene.riot">
-    Das war mal eine scheiß Idee. Der Laden ist sau am abfackeln und der Wirt ist nicht aufzufinden.
-
-    Zu trinken gibt's hier jedenfalls nichts mehr.
-  </content>
-
-  <action requires="!scene.riot">
-    <action requires="!inventory.beer">
-      <action inventory="beer">Trink 1 paar Bier</action>
-      <action scene="entry">Geh lieber wieder</action>
-    </action>
-
-    <action requires="inventory.beer">
-      <action requires="!inventory.anotherBeer" inventory="anotherBeer">Trink noch 1 paar Bier</action>
-      <action scene="entry">Genug gesoffen</action>
-    </action>
-  </action>
+      <fragment condition="inventory.beer">
+        <action condition="!inventory.anotherBeer" inventory="anotherBeer">Trink noch 1 paar Bier</action>
+        <action scene="entry">Genug gesoffen</action>
+      </fragment>
+    </fragment>
+  </actions>
 </scene>

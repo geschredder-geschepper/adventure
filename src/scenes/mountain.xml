@@ -1,23 +1,28 @@
 <scene>
   <title>Auf dem Berg</title>
 
-  <content requires="!inventory.beer">
-    Nun stehts du auf dem Berg. Es zieht.
+  <content>
+    <fragment condition="!inventory.beer">
+      Nun stehts du auf dem Berg. Es zieht.
+    </fragment>
+
+    <fragment condition="inventory.beer">
+      <fragment condition="!inventory.anotherBeer">
+        Boah ey nee hier ist das echt zugig.
+      </fragment>
+
+      <fragment condition="inventory.anotherBeer !scene.riot">
+        Ein Glück weg von der scheiß Nazi Kneipe!
+      </fragment>
+    </fragment>
+
+    <fragment condition="scene.riot">
+      Nice. Du genießt die Aussicht auf die brennende Nazi Kneipe -- besser kann ein Tag kaum laufen!
+    </fragment>
   </content>
 
-  <content requires="inventory.beer">
-    <content requires="!inventory.anotherBeer">
-      Boah ey nee hier ist das echt zugig.
-    </content>
 
-    <content requires="inventory.anotherBeer !scene.riot">
-      Ein Glück weg von der scheiß Nazi Kneipe!
-    </content>
-  </content>
-
-  <content requires="scene.riot">
-    Nice. Du genießt die Aussicht auf die brennende Nazi Kneipe -- besser kann ein Tag kaum laufen!
-  </content>
-
-  <action requires="!inventory.anotherBeer" scene="entry">Geh wieder runter</action>
+  <actions>
+    <action condition="!inventory.anotherBeer" scene="entry">Geh wieder runter</action>
+  </actions>
 </scene>

@@ -1,8 +1,53 @@
 export class Scene {
   constructor (xml, stateHandler) {
-    this.document = new DOMParser()
-      .parseFromString(xml, 'application/xml')
+    this.document = new DOMParser().parseFromString(xml, 'application/xml')
     this.stateHandler = stateHandler
+  }
+
+  walk (rootSelector) {
+    const root = this.document.querySelector(rootSelector)
+    const { stateHandler } = this
+
+    const treeWalker = this.document.createTreeWalker(root, NodeFilter.SHOW_ALL, {
+      acceptNode (node) {
+        if (!node.textContent.trim()) {
+          return NodeFilter.FILTER_REJECT
+        }
+
+        if (node instanceof Element) {
+          if (
+            node.hasAttribute('condition') &&
+            !stateHandler.test(node.getAttribute('condition'))
+          ) {
+            return NodeFilter.FILTER_REJECT
+          }
+
+          if (node.nodeName === 'fragment') {
+            return NodeFilter.FILTER_SKIP
+          }
+        }
+
+        return NodeFilter.FILTER_ACCEPT
+      }
+    })
+
+    return {
+      prev: null,
+
+      [Symbol.iterator] () {
+        return this
+      },
+
+      next () {
+        const node = this.prev instanceof Element
+          ? treeWalker.nextSibling()
+          : treeWalker.nextNode()
+
+        this.prev = node
+
+        return node ? { value: node } : { done: true }
+      }
+    }
   }
 
   filter (selector) {
@@ -10,9 +55,9 @@ export class Scene {
       /** @type {Element[]} */
       (this.document.querySelectorAll(selector))
     ).filter(element => (
-      !element.hasAttribute('requires') ||
+      !element.hasAttribute('test') ||
       this.stateHandler.test(
-        element.getAttribute('requires').split(/\s+/)
+        element.getAttribute('test').split(/\s+/)
       )
     )).reduce((result, element) => {
       const closest = element.parentNode.closest(selector)
@@ -44,11 +89,11 @@ export class Scene {
   /**
    * @type {Element|null}
    */
-  get contents () {
-    return this.filter('content')
+  get content () {
+    return [...this.walk('content')]
   }
 
   get actions () {
-    return this.filter('action')
+    return [...this.walk('actions')]
   }
 }

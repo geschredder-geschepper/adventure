@@ -43,7 +43,7 @@ const render = () => {
   const scene = scenes[currentScene]
   const { title } = scene
 
-  const contents = scene.contents.flatMap(element =>
+  const content = scene.content.flatMap(element =>
     element.textContent.split(/\n{2,}/).map(text => `<p>${text}</p>`)
   ).join('')
 
@@ -61,7 +61,7 @@ const render = () => {
 
   outlet.content.innerHTML = `
     <h2>${title}</h2>
-    ${contents}
+    ${content}
   `
 
   outlet.actions.innerHTML = actions
@@ -100,6 +100,6 @@ document.addEventListener('click', event => {
 })
 
 document.getElementById('restart').addEventListener('click', () => {
-  stateHandler.clearState().setState(initialState)
-  render()
+  stateHandler.clearState()
+  window.location.reload()
 })
