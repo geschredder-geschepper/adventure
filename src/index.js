@@ -6,14 +6,14 @@ const STATE_PROPS = ['scene', 'inventory']
 const baseTitle = document.title
 const context = require.context('./scenes/', true, /\.xml$/)
 
-const initialState = STATE_PROPS.reduce((result, current) => {
+const getInitialState = () => STATE_PROPS.reduce((result, current) => {
   result[current] = {}
   return result
 }, {
   currentScene: 'entry'
 })
 
-const stateHandler = new StateHandler(initialState)
+const stateHandler = new StateHandler(getInitialState())
 
 const scenes = context.keys().reduce((result, key) => {
   const niceKey = key.replace(/^\W*/, '').replace(/\.\w*$/, '')
@@ -44,7 +44,7 @@ const render = () => {
   const { title } = scene
 
   const contents = scene.contents.flatMap(element =>
-    element.textContent.split(/\n{2,}/).map(text => `<p>${text}</p>`)
+    element.textContent.split(/\n{2,}/).filter(text => text.trim()).map(text => `<p>${text}</p>`)
   ).join('')
 
   const actions = scene.actions.map(element => `
@@ -100,6 +100,6 @@ document.addEventListener('click', event => {
 })
 
 document.getElementById('restart').addEventListener('click', () => {
-  stateHandler.clearState().setState(initialState)
+  stateHandler.clearState().setState(getInitialState())
   render()
 })
