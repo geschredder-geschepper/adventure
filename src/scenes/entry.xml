@@ -1,27 +1,27 @@
 <scene>
   <title>Es geht los...</title>
 
-  <content requires="!scene.entry">
+  <content condition="!scene.entry">
     Vor dir steht ein Berg; neben dir befindet sich eine Kneipe.
   </content>
 
-  <content requires="scene.entry">
+  <content condition="scene.entry">
     Es ist wie es ist.
 
-    <content requires="!scene.mountain">
+    <content condition="!scene.mountain">
       Du stehst immer noch vor dem Berg; neben dir befindet sich eine Kneipe.
     </content>
 
-    <content requires="scene.mountain">
+    <content condition="scene.mountain">
       Du stehst schon wieder vor dem Berg; neben dir befindet sich eine Kneipe.
     </content>
   </content>
 
-  <content requires="scene.pub inventory.beer">
+  <content condition="scene.pub inventory.beer">
     Du hast auch schon gut einen in der Schüssel.
   </content>
 
   <action scene="mountain">Geh auf den Berg</action>
   <action scene="pub">Geh in die Kneipe</action>
-  <action requires="inventory.anotherBeer" scene="riot">Zünde den Saftladen an</action>
+  <action condition="inventory.anotherBeer" scene="riot">Zünde den Saftladen an</action>
 </scene>

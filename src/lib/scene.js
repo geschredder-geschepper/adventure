@@ -10,9 +10,9 @@ export class Scene {
       /** @type {Element[]} */
       (this.document.querySelectorAll(selector))
     ).filter(element => (
-      !element.hasAttribute('requires') ||
+      !element.hasAttribute('condition') ||
       this.stateHandler.test(
-        element.getAttribute('requires').split(/\s+/)
+        element.getAttribute('condition').split(/\s+/)
       )
     )).reduce((result, element) => {
       const closest = element.parentNode.closest(selector)

@@ -1,38 +1,38 @@
 <scene>
   <title>In der Kneipe</title>
 
-  <content requires="!inventory.beer">
+  <content condition="!inventory.beer">
     Du befindest dich in der Kneipe.
   </content>
 
-  <content requires="!scene.riot">
-    <content requires="inventory.beer">
+  <content condition="!scene.riot">
+    <content condition="inventory.beer">
       Du betrinkst dich in der Kneipe.
 
-      <content requires="!inventory.anotherBeer">
+      <content condition="!inventory.anotherBeer">
         Die Mucke ist eigentlich auch ganz nice.
       </content>
     </content>
 
-    <content requires="inventory.anotherBeer">
+    <content condition="inventory.anotherBeer">
       Warte mal, läuft da etwa Endstufe?
     </content>
   </content>
 
-  <content requires="scene.riot">
+  <content condition="scene.riot">
     Das war mal eine scheiß Idee. Der Laden ist sau am abfackeln und der Wirt ist nicht aufzufinden.
 
     Zu trinken gibt's hier jedenfalls nichts mehr.
   </content>
 
-  <action requires="!scene.riot">
-    <action requires="!inventory.beer">
+  <action condition="!scene.riot">
+    <action condition="!inventory.beer">
       <action inventory="beer">Trink 1 paar Bier</action>
       <action scene="entry">Geh lieber wieder</action>
     </action>
 
-    <action requires="inventory.beer">
-      <action requires="!inventory.anotherBeer" inventory="anotherBeer">Trink noch 1 paar Bier</action>
+    <action condition="inventory.beer">
+      <action condition="!inventory.anotherBeer" inventory="anotherBeer">Trink noch 1 paar Bier</action>
       <action scene="entry">Genug gesoffen</action>
     </action>
   </action>
