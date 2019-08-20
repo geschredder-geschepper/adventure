@@ -13,17 +13,20 @@ export class Scene {
    * @type {string}
    */
   get title () {
-    const title = this.document.querySelector('title')
+    const [title] = this.filter('title', NodeFilter.SHOW_TEXT)
     return title ? title.textContent : ''
   }
 
   /**
-   * @type {Element|null}
+   * @type {Element[]}
    */
   get content () {
     return this.filter('content', NodeFilter.SHOW_TEXT)
   }
 
+  /**
+   * @type {Element[]}
+   */
   get actions () {
     return this.filter('actions')
   }

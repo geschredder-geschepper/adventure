@@ -1,5 +1,13 @@
 <scene>
-  <title>Es geht los...</title>
+  <title>
+    <fragment condition="!scene.entry">
+      Es geht los...
+    </fragment>
+
+    <fragment condition="scene.entry">
+      Es geht weiter...
+    </fragment>
+  </title>
 
   <content>
     <fragment condition="!scene.entry">
