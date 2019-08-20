@@ -16,7 +16,7 @@ export class StateHandler {
     this.state = initialState
   }
 
-  restoreState () {
+  restore () {
     try {
       this.state = decode(window.location.hash.slice(1))
     } catch (error) {
@@ -26,7 +26,7 @@ export class StateHandler {
     return this
   }
 
-  setState (state) {
+  set (state) {
     merge(this.state, state)
 
     window.history.replaceState(
@@ -38,7 +38,7 @@ export class StateHandler {
     return this
   }
 
-  clearState () {
+  clear () {
     this.state = {}
 
     window.history.replaceState(

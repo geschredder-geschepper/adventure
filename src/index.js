@@ -1,4 +1,5 @@
 import { StateHandler } from './lib/state-handler'
+import { TreeWalkerFactory } from './lib/tree-walker-factory'
 import { Scene } from './lib/scene'
 import './styles/main.scss'
 
@@ -14,10 +15,11 @@ const getInitialState = () => STATE_PROPS.reduce((result, current) => {
 })
 
 const stateHandler = new StateHandler(getInitialState())
+const treeWalkerFactory = new TreeWalkerFactory(stateHandler)
 
 const scenes = context.keys().reduce((result, key) => {
   const niceKey = key.replace(/^\W*/, '').replace(/\.\w*$/, '')
-  result[niceKey] = new Scene(context(key).default, stateHandler)
+  result[niceKey] = new Scene(context(key).default, treeWalkerFactory)
   return result
 }, {})
 
@@ -27,7 +29,7 @@ const outlet = {
 }
 
 if (window.location.hash) {
-  stateHandler.restoreState()
+  stateHandler.restore()
 }
 
 const mapDataAttributes = element => STATE_PROPS
@@ -67,11 +69,11 @@ const render = () => {
   outlet.actions.innerHTML = actions
 
   if (actions) {
-    stateHandler.setState({
+    stateHandler.set({
       scene: { [currentScene]: true }
     })
   } else {
-    stateHandler.clearState()
+    stateHandler.clear()
   }
 }
 
@@ -87,11 +89,11 @@ document.addEventListener('click', event => {
   event.preventDefault()
 
   if (target.dataset.scene) {
-    stateHandler.setState({ currentScene: target.dataset.scene })
+    stateHandler.set({ currentScene: target.dataset.scene })
   }
 
   if (target.dataset.inventory) {
-    stateHandler.setState({
+    stateHandler.set({
       inventory: { [target.dataset.inventory]: true }
     })
   }
@@ -100,6 +102,6 @@ document.addEventListener('click', event => {
 })
 
 document.getElementById('restart').addEventListener('click', () => {
-  stateHandler.clearState().setState(getInitialState())
+  stateHandler.clear().set(getInitialState())
   render()
 })
