@@ -27,7 +27,7 @@ const outlet = {
 }
 
 if (window.location.hash) {
-  stateHandler.initState()
+  stateHandler.restoreState()
 }
 
 const mapDataAttributes = element => STATE_PROPS

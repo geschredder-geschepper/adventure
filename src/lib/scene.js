@@ -1,24 +1,33 @@
+const walk = treeWalker => ({
+  [Symbol.iterator] () {
+    return this
+  },
+
+  next () {
+    const node = treeWalker.nextNode()
+    return node ? { value: node } : { done: true }
+  }
+})
+
 export class Scene {
   constructor (xml, stateHandler) {
     this.document = new DOMParser().parseFromString(xml, 'application/xml')
     this.stateHandler = stateHandler
   }
 
-  walk (rootSelector) {
-    const root = this.document.querySelector(rootSelector)
-    const { stateHandler } = this
+  createTreeWalker (root, whatToShow) {
+    const shouldReject = node => node.hasAttribute('condition') && !this.stateHandler.test(
+      node.getAttribute('condition').split(/\s+/)
+    )
 
-    const treeWalker = this.document.createTreeWalker(root, NodeFilter.SHOW_ALL, {
+    return this.document.createTreeWalker(root, whatToShow + NodeFilter.SHOW_ELEMENT, {
       acceptNode (node) {
         if (!node.textContent.trim()) {
           return NodeFilter.FILTER_REJECT
         }
 
         if (node instanceof Element) {
-          if (
-            node.hasAttribute('condition') &&
-            !stateHandler.test(node.getAttribute('condition'))
-          ) {
+          if (shouldReject(node)) {
             return NodeFilter.FILTER_REJECT
           }
 
@@ -30,52 +39,11 @@ export class Scene {
         return NodeFilter.FILTER_ACCEPT
       }
     })
-
-    return {
-      prev: null,
-
-      [Symbol.iterator] () {
-        return this
-      },
-
-      next () {
-        const node = this.prev instanceof Element
-          ? treeWalker.nextSibling()
-          : treeWalker.nextNode()
-
-        this.prev = node
-
-        return node ? { value: node } : { done: true }
-      }
-    }
   }
 
-  filter (selector) {
-    return Array.from(
-      /** @type {Element[]} */
-      (this.document.querySelectorAll(selector))
-    ).filter(element => (
-      !element.hasAttribute('test') ||
-      this.stateHandler.test(
-        element.getAttribute('test').split(/\s+/)
-      )
-    )).reduce((result, element) => {
-      const closest = element.parentNode.closest(selector)
-
-      if (!closest || result.includes(closest)) {
-        result.push(element)
-      }
-
-      return result
-    }, []).map(element => {
-      const clone = element.cloneNode(true)
-
-      clone.querySelectorAll(selector).forEach(
-        node => node.parentNode.removeChild(node)
-      )
-
-      return clone
-    }).filter(node => node.textContent.trim())
+  filter (rootSelector, whatToShow = 0) {
+    const root = this.document.querySelector(rootSelector)
+    return [...walk(this.createTreeWalker(root, whatToShow))]
   }
 
   /**
@@ -90,10 +58,10 @@ export class Scene {
    * @type {Element|null}
    */
   get content () {
-    return [...this.walk('content')]
+    return this.filter('content', NodeFilter.SHOW_TEXT)
   }
 
   get actions () {
-    return [...this.walk('actions')]
+    return this.filter('actions')
   }
 }
