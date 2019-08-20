@@ -5,6 +5,8 @@
     Wo kommen denn plötzlich die ganzen Cops her? Fuck!
   </content>
 
-  <action scene="mountain">Geh auf den Berg</action>
-  <action scene="pub">Geh in die Kneipe</action>
+  <actions>
+    <action scene="mountain">Geh auf den Berg</action>
+    <action scene="pub">Geh in die Kneipe</action>
+  </actions>
 </scene>

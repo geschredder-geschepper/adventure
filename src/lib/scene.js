@@ -1,36 +1,12 @@
 export class Scene {
-  constructor (xml, stateHandler) {
-    this.document = new DOMParser()
-      .parseFromString(xml, 'application/xml')
-    this.stateHandler = stateHandler
+  constructor (xml, treeWalkerFactory) {
+    this.document = new DOMParser().parseFromString(xml, 'application/xml')
+    this.treeWalkerFactory = treeWalkerFactory
   }
 
-  filter (selector) {
-    return Array.from(
-      /** @type {Element[]} */
-      (this.document.querySelectorAll(selector))
-    ).filter(element => (
-      !element.hasAttribute('condition') ||
-      this.stateHandler.test(
-        element.getAttribute('condition').split(/\s+/)
-      )
-    )).reduce((result, element) => {
-      const closest = element.parentNode.closest(selector)
-
-      if (!closest || result.includes(closest)) {
-        result.push(element)
-      }
-
-      return result
-    }, []).map(element => {
-      const clone = element.cloneNode(true)
-
-      clone.querySelectorAll(selector).forEach(
-        node => node.parentNode.removeChild(node)
-      )
-
-      return clone
-    }).filter(node => node.textContent.trim())
+  filter (rootSelector, whatToShow) {
+    const root = this.document.querySelector(rootSelector)
+    return [...this.treeWalkerFactory.walk(root, whatToShow)]
   }
 
   /**
@@ -44,11 +20,11 @@ export class Scene {
   /**
    * @type {Element|null}
    */
-  get contents () {
-    return this.filter('content')
+  get content () {
+    return this.filter('content', NodeFilter.SHOW_TEXT)
   }
 
   get actions () {
-    return this.filter('action')
+    return this.filter('actions')
   }
 }
