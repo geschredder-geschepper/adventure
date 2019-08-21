@@ -69,7 +69,7 @@ const render = () => {
   outlet.actions.innerHTML = actions
 
   if (actions) {
-    stateHandler.set({
+    stateHandler.merge({
       scene: { [currentScene]: true }
     })
   } else {
@@ -89,11 +89,11 @@ document.addEventListener('click', event => {
   event.preventDefault()
 
   if (target.dataset.scene) {
-    stateHandler.set({ currentScene: target.dataset.scene })
+    stateHandler.merge({ currentScene: target.dataset.scene })
   }
 
   if (target.dataset.inventory) {
-    stateHandler.set({
+    stateHandler.merge({
       inventory: { [target.dataset.inventory]: true }
     })
   }
@@ -102,6 +102,6 @@ document.addEventListener('click', event => {
 })
 
 document.getElementById('restart').addEventListener('click', () => {
-  stateHandler.clear().set(getInitialState())
+  stateHandler.clear().merge(getInitialState())
   render()
 })

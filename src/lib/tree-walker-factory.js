@@ -5,7 +5,7 @@ export class TreeWalkerFactory {
 
   shouldReject (node) {
     return node.hasAttribute('condition') && !this.stateHandler.test(
-      node.getAttribute('condition').split(/\s+/)
+      node.getAttribute('condition')
     )
   }
 

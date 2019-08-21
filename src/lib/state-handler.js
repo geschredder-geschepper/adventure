@@ -26,7 +26,7 @@ export class StateHandler {
     return this
   }
 
-  set (state) {
+  merge (state) {
     merge(this.state, state)
 
     window.history.replaceState(
@@ -50,19 +50,27 @@ export class StateHandler {
     return this
   }
 
-  test (path) {
-    if (Array.isArray(path)) {
-      return path.every(current => this.test(current))
-    }
+  set (path) {
+    const state = path.split('.').reduceRight((value, key) => ({
+      [key]: value
+    }), true)
 
-    if (path[0] === '!') {
-      return !this.test(path.slice(1))
-    }
+    return this.merge(state)
+  }
 
+  get (path) {
     return path.split('.').reduce((result, current) => {
       return (
         result && has(result, current)
       ) ? result[current] : undefined
-    }, this.state) !== undefined
+    }, this.state)
+  }
+
+  test (conditions) {
+    return conditions.split(/\s+/).every(condition => {
+      return condition[0] === '!'
+        ? this.get(condition.slice(1)) === undefined
+        : this.get(condition) !== undefined
+    })
   }
 }
