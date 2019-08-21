@@ -30,12 +30,12 @@
   <actions>
     <fragment condition="!scene.riot">
       <fragment condition="!inventory.beer">
-        <action inventory="beer">Trink 1 paar Bier</action>
+        <action set="inventory.beer">Trink 1 paar Bier</action>
         <action scene="entry">Geh lieber wieder</action>
       </fragment>
 
       <fragment condition="inventory.beer">
-        <action condition="!inventory.anotherBeer" inventory="anotherBeer">Trink noch 1 paar Bier</action>
+        <action condition="!inventory.anotherBeer" set="inventory.anotherBeer">Trink noch 1 paar Bier</action>
         <action scene="entry">Genug gesoffen</action>
       </fragment>
     </fragment>

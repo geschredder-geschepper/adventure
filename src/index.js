@@ -3,14 +3,11 @@ import { TreeWalkerFactory } from './lib/tree-walker-factory'
 import { Scene } from './lib/scene'
 import './styles/main.scss'
 
-const STATE_PROPS = ['scene', 'inventory']
+const ACTIONS = ['scene', 'set']
 const baseTitle = document.title
 const context = require.context('./scenes/', true, /\.xml$/)
 
-const getInitialState = () => STATE_PROPS.reduce((result, current) => {
-  result[current] = {}
-  return result
-}, {
+const getInitialState = () => ({
   currentScene: 'entry'
 })
 
@@ -32,7 +29,7 @@ if (window.location.hash) {
   stateHandler.restore()
 }
 
-const mapDataAttributes = element => STATE_PROPS
+const mapDataAttributes = element => ACTIONS
   .filter(current => element.hasAttribute(current))
   .map(current => `data-${current}="${element.getAttribute(current)}"`)
   .join('')
@@ -92,10 +89,8 @@ document.addEventListener('click', event => {
     stateHandler.merge({ currentScene: target.dataset.scene })
   }
 
-  if (target.dataset.inventory) {
-    stateHandler.merge({
-      inventory: { [target.dataset.inventory]: true }
-    })
+  if (target.dataset.set) {
+    stateHandler.set(target.dataset.set)
   }
 
   render()
