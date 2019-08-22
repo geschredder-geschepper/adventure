@@ -34,9 +34,6 @@ const mapDataAttributes = element => ACTIONS
   .map(current => `data-${current}="${element.getAttribute(current)}"`)
   .join('')
 
-/**
- * @param {Scene} scene
- */
 const render = () => {
   const { currentScene } = stateHandler.state
   const scene = scenes[currentScene]
@@ -74,8 +71,6 @@ const render = () => {
   }
 }
 
-render()
-
 document.addEventListener('click', event => {
   const { target } = event
 
@@ -96,7 +91,13 @@ document.addEventListener('click', event => {
   render()
 })
 
+document.getElementById('theme').addEventListener('click', () => {
+  document.body.classList.toggle('theme-dark')
+})
+
 document.getElementById('restart').addEventListener('click', () => {
   stateHandler.clear().merge(getInitialState())
   render()
 })
+
+render()
